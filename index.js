@@ -17,42 +17,39 @@ initializeApp({
 const db = getFirestore();
 
 // create a collection called "restaurants"
-console.log(' -- We are about to do some stuff -- ');
+const restRef = db.collection('restaurants');
 
 // add each restaurant
-db.collection('restaurants').add(restaurants[3])
+restRef.add(restaurants[3])
   .then(doc => {
     console.log('Added restaurant', doc.id);
-    // the new restaurant has been
-    db.collection('restaurants').get()
-    .then(snapshot => {
-      snapshot.forEach(doc => {
-        console.log(doc.id, ' => ', doc.data());
-      })
-    })
-    .then(() => {
-      console.log('All 4 restaurants returned.');
-    });
   })
   .catch(err => {
     console.error(err);
   });
 
-console.log(' -- This has nothing to do with restaurants -- ');
 // read one document
-// db.collection('restaurants').doc('hVJrR04ObLv6TyWAPMVp').get()
-//   .then(doc => {
-//     console.log(doc.id, ' => ', doc.data());
-//   })
-//   .catch(err => console.error(err));
+restRef.doc('hVJrR04ObLv6TyWAPMVp').get()
+  .then(doc => {
+    console.log(doc.id, ' => ', doc.data());
+  })
+  .catch(err => console.error(err));
 
 // get all documents
-// db.collection('restaurants').get()
-//   .then(snapshot => {
-//     snapshot.forEach(doc => {
-//       console.log(doc.id, ' => ', doc.data());
-//     })
-//   })
-//   .catch(console.error);
+restRef.get()
+  .then(snapshot => {
+    snapshot.forEach(doc => {
+      console.log(doc.id, ' ===> ', doc.data());
+    })
+  })
+  .catch(console.error);
 
-// find a document(s)
+// querying a collection
+restRef.where('name','==','Bolay').get()
+  .then(snapshot => {
+    snapshot.forEach(doc => {
+      console.log(doc.data());
+    });
+  })
+  .catch(console.error);
+  
